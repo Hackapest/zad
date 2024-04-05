@@ -1,5 +1,4 @@
 import pandas as pd
-pd.plotting.register_matplotlib_converters()
 import matplotlib.pyplot as plt
 import seaborn as sns
 from spyre import server
@@ -141,8 +140,7 @@ class myApp(server.App):
 
     def getData(self, params):
         df = loadFiles(DIR_NAME)
-
-        data = params['index']
+        
         pid = int(params['region'])
         week_range = params['week_interval'].split('-')
         date_range = params['date_range'].split('-')
@@ -164,7 +162,7 @@ class myApp(server.App):
         pivot_df = df.pivot(index='Year', columns='Week', values=data)
         plt.figure(figsize=(25, 10))
         sns.heatmap(pivot_df, cmap='coolwarm', cbar_kws={'label': data}, annot=True)
-        plt.title(f'{data} Heatmap for pID {pid}')
+        plt.title(f'{data} Heatmap for region {rIDs[pid]}')
         plt.xlabel('Week')
         plt.ylabel('Year')
 
@@ -174,7 +172,7 @@ class myApp(server.App):
 
 def main():
     app = myApp()
-    app.launch(port=8082)
+    app.launch(port=8080)
 
 if __name__ == '__main__':
     main()
